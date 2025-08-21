@@ -1,19 +1,13 @@
-from pydantic_model import Payload
-import databricks_api as dbx
-
-ACCESS_MAP = {
-    "read_only": ["SELECT", "READ_VOLUME", "EXECUTE"],
-    "create": ["CREATE_VOLUME", "CREATE_TABLE"],
-    "manage": ["MANAGE"],
-    "full": ["ALL_PRIVILEGES"],
-}
+from app.schemas.study_payload import StudyPayload
+import app.databricks_api as dbx
+from app.core.config import ACCESS_MAP
 
 
-def process_payload(payload: Payload):
+def process_payload(payload: StudyPayload):
 
-    catalog_name = payload.business_metadata.product.lower()
+    catalog_name = payload.business_metadata.product_name.lower()
     study = payload.business_metadata.study
-
+    """
     # 1. Check if catalog exists
     catalogs = dbx.list_catalogs().get("catalogs", [])
 
@@ -43,7 +37,7 @@ def process_payload(payload: Payload):
                 directory_name, volume_name, volume_schema, catalog_name
             )
             print(f"Directory {directory_name} created in volume {volume_name}")
-
+    """
     # 5. Apply access controls
     access_controls = payload.access_controls
 
@@ -54,29 +48,18 @@ def process_payload(payload: Payload):
 
             for group in control.groups or []:
                 access = ACCESS_MAP.get(group.access, [])
-                if len(access) == 0:
+                if not access:
                     print(
                         f"Invalid access level {group.access} for group {group.group}"
                     )
                     continue
 
+                # groups = dbx.ensure_group_exists(group.group)
+                # group_name = groups.get("displayName") if groups else group.group
                 changes.append(
                     {
                         "add": access,
                         "principal": f"{group.group}",
-                    }
-                )
-
-            for user in control.users or []:
-                access = ACCESS_MAP.get(user.access, [])
-                if len(access) == 0:
-                    print(f"Invalid access level {user.access} for user {user.user}")
-                    continue
-
-                changes.append(
-                    {
-                        "add": access,
-                        "principal": f"{user.user}",
                     }
                 )
 
