@@ -3,8 +3,9 @@ from typing import List, Dict, Optional
 
 
 class BusinessMetadata(BaseModel):
-    product: str
-    study: str
+    product_name: str
+    study: str  
+    study_type: str
 
 
 class VolumeDirectories(BaseModel):
@@ -15,7 +16,6 @@ class VolumeDirectories(BaseModel):
 class StorageSetup(BaseModel):
     data_schemas: List[str]
     volume_directories: VolumeDirectories
-
 
 
 class GroupAccess(BaseModel):
@@ -30,7 +30,7 @@ class UserAccess(BaseModel):
 
 class EntityAccessControl(BaseModel):
     groups: Optional[List[GroupAccess]] = []
-    users: Optional[List[UserAccess]] = []
+    # users: Optional[List[UserAccess]] = []
 
 
 # class AccessControls(BaseModel):
@@ -39,7 +39,7 @@ class EntityAccessControl(BaseModel):
 #     volumes: Optional[EntityAccessControl]
 
 
-class Payload(BaseModel):
+class StudyPayload(BaseModel):
     business_metadata: BusinessMetadata
     storage_setup: StorageSetup
     access_controls: Optional[Dict[str, EntityAccessControl]] = None

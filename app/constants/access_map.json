@@ -1,0 +1,9 @@
+{
+  "list": ["USAGE"],
+  "read_only": ["USAGE", "SELECT"],
+  "read_write": ["USAGE", "SELECT", "CREATE", "MODIFY"],
+  "modify": ["USAGE", "SELECT", "MODIFY"],
+  "read_only_volume": ["USAGE", "READ VOLUME"],
+  "read_write_volume": ["USAGE", "READ VOLUME", "WRITE VOLUME"],
+  "full": ["ALL_PRIVILEGES"]
+}
