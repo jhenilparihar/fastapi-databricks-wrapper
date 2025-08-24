@@ -20,3 +20,8 @@ ACCESS_MAP: Dict[str, List[str]] = json.loads(ACCESS_MAP_PATH.read_text())
 DATABRICKS_HOST: str = os.getenv("DATABRICKS_HOST", "")
 DATABRICKS_TOKEN: str = os.getenv("DATABRICKS_TOKEN", "")
 DATABRICKS_ACCOUNT_ID: str = os.getenv("DATABRICKS_ACCOUNT_ID", "")
+LAKEBASE_DB_NAME: str = os.getenv("LAKEBASE_DB_NAME", "")
+LAKEBASE_USER: str = os.getenv("LAKEBASE_USER", "")
+LAKEBASE_OAUTH_TOKEN: str = os.getenv("LAKEBASE_OAUTH_TOKEN", "")
+LAKEBASE_HOST: str = os.getenv("LAKEBASE_HOST", "")
+

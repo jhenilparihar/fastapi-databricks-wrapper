@@ -1,9 +1,9 @@
 {
-  "list": ["USAGE"],
-  "read_only": ["USAGE", "SELECT"],
-  "read_write": ["USAGE", "SELECT", "CREATE", "MODIFY"],
-  "modify": ["USAGE", "SELECT", "MODIFY"],
-  "read_only_volume": ["USAGE", "READ VOLUME"],
-  "read_write_volume": ["USAGE", "READ VOLUME", "WRITE VOLUME"],
+  "list": ["USE SCHEMA"],
+  "read_only": ["USE SCHEMA", "SELECT"],
+  "read_write": ["USE SCHEMA", "SELECT", "CREATE", "MODIFY"],
+  "modify": ["USE SCHEMA", "SELECT", "MODIFY"],
+  "read_only_volume": ["USE SCHEMA", "READ VOLUME"],
+  "read_write_volume": ["USE SCHEMA", "READ VOLUME", "WRITE VOLUME"],
   "full": ["ALL_PRIVILEGES"]
 }

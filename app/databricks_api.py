@@ -18,7 +18,6 @@ def _make_request(
     method: str, endpoint: str, retries: int = 3, backoff: int = 2, **kwargs
 ):
     """
-    Helper for making Databricks API calls with retries.
     - method: HTTP method ("GET", "POST", "PUT", "PATCH")
     - endpoint: relative endpoint (not full URL)
     - retries: number of retries on failure

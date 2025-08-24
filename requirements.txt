@@ -1,3 +1,4 @@
 fastapi
 fastapi-cli
 requests
+psycopg2

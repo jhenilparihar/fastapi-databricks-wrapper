@@ -7,7 +7,7 @@ def process_payload(payload: StudyPayload):
 
     catalog_name = payload.business_metadata.product_name.lower()
     study = payload.business_metadata.study
-    """
+
     # 1. Check if catalog exists
     catalogs = dbx.list_catalogs().get("catalogs", [])
 
@@ -37,7 +37,7 @@ def process_payload(payload: StudyPayload):
                 directory_name, volume_name, volume_schema, catalog_name
             )
             print(f"Directory {directory_name} created in volume {volume_name}")
-    """
+
     # 5. Apply access controls
     access_controls = payload.access_controls
 
@@ -56,6 +56,7 @@ def process_payload(payload: StudyPayload):
 
                 # groups = dbx.ensure_group_exists(group.group)
                 # group_name = groups.get("displayName") if groups else group.group
+
                 changes.append(
                     {
                         "add": access,
@@ -66,7 +67,7 @@ def process_payload(payload: StudyPayload):
             access_payload = {"changes": changes}
 
             dbx.grant_permissions(
-                "schema", f"{catalog_name}.{study}_{schema_name}", access_payload
+                "SCHEMA", f"{catalog_name}.{study}_{schema_name}", access_payload
             )
             print(f"Access controls applied for {catalog_name}.{study}_{schema_name}")
 
