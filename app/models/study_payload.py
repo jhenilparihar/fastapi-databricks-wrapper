@@ -43,3 +43,8 @@ class StudyPayload(BaseModel):
     business_metadata: BusinessMetadata
     storage_setup: StorageSetup
     access_controls: Optional[Dict[str, EntityAccessControl]] = None
+    
+class Metadata(BaseModel):
+    description: str
+    business_justification: str
+    request_by: str

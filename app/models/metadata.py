@@ -16,3 +16,9 @@ class MetadataLog(BaseModel):
     product_name: Optional[str] = None
     study: Optional[str] = None
     study_type: Optional[str] = None
+
+    # Business descriptions for metadata
+    description: Optional[str] = None
+    business_justification: Optional[str] = None
+    request_by: str
+    api_response_time: float
