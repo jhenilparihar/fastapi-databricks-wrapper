@@ -1,6 +1,6 @@
 from tokenize import group
 from fastapi import FastAPI, HTTPException
-from app.schemas.study_payload import StudyPayload
+from app.models.study_payload import StudyPayload
 from app.services.study_resources import process_payload
 from app.databricks_api import DatabricksAPIError
 from app.services.capture_metadata import insert_metadata

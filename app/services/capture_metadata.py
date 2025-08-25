@@ -1,8 +1,8 @@
 import json
 from datetime import datetime
 from typing import Dict, Any, Optional
-from app.schemas.study_payload import StudyPayload
-from app.schemas.metadata import MetadataLog
+from app.models.study_payload import StudyPayload
+from app.models.metadata import MetadataLog
 import psycopg2
 from app.core.config import (
     LAKEBASE_DB_NAME,
@@ -22,6 +22,7 @@ def insert_metadata(
     """
     Insert metadata record into Lakebase
     """
+
 
     log = MetadataLog(
         request_payload=payload.dict(),

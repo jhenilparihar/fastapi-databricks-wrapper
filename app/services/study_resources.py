@@ -1,4 +1,4 @@
-from app.schemas.study_payload import StudyPayload
+from app.models.study_payload import StudyPayload
 import app.databricks_api as dbx
 from app.core.config import ACCESS_MAP
 
