@@ -1,6 +1,7 @@
 import time
 import threading
 import httpx
+import json
 
 
 BASE_URL = "http://localhost:8000"
@@ -50,75 +51,9 @@ def lag_test(payload, payload2):
     return lag
 
 if __name__ == "__main__":
-    payload = {
-            "business_metadata": {
-            "product_name": "amg193",
-            "study": "20250821",
-            "study_type": "open"
-            },
-            "storage_setup": {
-            "data_schemas": [
-                "raw",
-                "raw_restricted",
-                "volumes"
-            ],
-            "volume_directories": {
-                "raw": [
-                "doc",
-                "utils"
-                ],
-                "raw_restricted": [
-                "doc",
-                "utils"
-                ]
-            }
-            },
-            "access_controls": {
-            "raw": {
-                "groups": [
-                {
-                    "group": "cdh-amg193-20250821-LDM",
-                    "access": "list"
-                },
-                {
-                    "group": "cdh-amg193-20250821-SLS",
-                    "access": "read_only"
-                }
-                ]
-            },
-            "raw_restricted": {
-                "groups": [
-                {
-                    "group": "cdh-amg193-20250821-LDM",
-                    "access": "list"
-                },
-                {
-                    "group": "cdh-amg193-20250821-SLS",
-                    "access": "read_only"
-                }
-                ]
-            },
-            "volumes": {
-                "groups": [
-                {
-                    "group": "cdh-amg193-20250821-LDM",
-                    "access": "list"
-                },
-                {
-                    "group": "cdh-amg193-20250821-SLS",
-                    "access": "read_only_volume"
-                }
-                ]
-            }
-            }
-        }
-    payload2 = {
-            "description": "dynamic_test",
-            "business_justification": "dynamic_test",
-            "request_by": "yash"
-        }
-
-
-
+    with open("api_body.json", "r") as f:
+        data = json.load(f)
+    payload = data["payload1"]
+    payload2 = data["payload2"]
 
     lag_test(payload, payload2)

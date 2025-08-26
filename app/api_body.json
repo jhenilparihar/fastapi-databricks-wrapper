@@ -1,0 +1,69 @@
+{
+  "payload": {
+    "business_metadata": {
+      "product_name": "merc-amg193",
+      "study": "20250821",
+      "study_type": "open"
+    },
+    "storage_setup": {
+      "data_schemas": [
+        "raw",
+        "raw_restricted",
+        "volumes"
+      ],
+      "volume_directories": {
+        "raw": [
+          "doc",
+          "utils"
+        ],
+        "raw_restricted": [
+          "doc",
+          "utils"
+        ]
+      }
+    },
+    "access_controls": {
+      "raw": {
+        "groups": [
+          {
+            "group": "jpg-merc-amg193-20250821-PLM",
+            "access": "list"
+          },
+          {
+            "group": "jpg-merc-amg193-20250821-GLS",
+            "access": "read_only"
+          }
+        ]
+      },
+      "raw_restricted": {
+        "groups": [
+          {
+            "group": "jpg-merc-amg193-20250821-PLM",
+            "access": "list"
+          },
+          {
+            "group": "jpg-merc-amg193-20250821-GLS",
+            "access": "read_only"
+          }
+        ]
+      },
+      "volumes": {
+        "groups": [
+          {
+            "group": "jpg-merc-amg193-20250821-PLM",
+            "access": "list"
+          },
+          {
+            "group": "jpg-merc-amg193-20250821-GLS",
+            "access": "read_only_volume"
+          }
+        ]
+      }
+    }
+  },
+  "payload2": {
+    "description": "dynamic_test",
+    "business_justification": "dynamic_test",
+    "request_by": ""
+  }
+}
