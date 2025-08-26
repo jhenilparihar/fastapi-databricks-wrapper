@@ -2,6 +2,9 @@ import time
 import requests
 from urllib.parse import urljoin
 from app.core.config import DATABRICKS_HOST, DATABRICKS_TOKEN, DATABRICKS_ACCOUNT_ID
+from app.core.logging_config import get_logger
+
+logger = get_logger("databricks_api")
 
 
 HEADERS = {"Authorization": f"Bearer {DATABRICKS_TOKEN}"}
@@ -25,11 +28,15 @@ def _make_request(
     """
     url = urljoin(DATABRICKS_HOST, endpoint)
 
+    logger.info(f"Calling Databricks API: {method} {endpoint}")
+
+
     for attempt in range(retries):
         try:
             resp = requests.request(method, url, headers=HEADERS, timeout=30, **kwargs)
 
             if resp.ok:
+                logger.info(f"Databricks API response: {resp.status_code} {resp.text}")
                 return resp.json() if resp.text.strip() else {"status": "success"}
 
             if 400 <= resp.status_code < 500:  # Client errors (no retry)
