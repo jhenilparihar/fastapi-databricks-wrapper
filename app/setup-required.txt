@@ -1,0 +1,25 @@
+-- Create a catalog using the product name from the API request JSON 
+CREATE CATALOG IF NOT EXISTS catalog_name;
+
+-- Create the metadata table to capture request and response details
+
+CREATE TABLE metadata (
+    id SERIAL PRIMARY KEY,                       
+    request_id UUID DEFAULT gen_random_uuid(),   
+    request_payload JSONB,                       
+    response_payload JSONB,                      
+    http_status_code INT,                             
+    error_message TEXT,                          
+    operation_type VARCHAR(100),                 
+    resource_name VARCHAR(255),                  
+    created_at TIMESTAMPTZ DEFAULT NOW(),        
+    product_name VARCHAR(100),
+    study VARCHAR (150),
+    study_type VARCHAR (30), 
+    description TEXT,
+    business_justification TEXT, 
+    request_by VARCHAR(255) NOT NULL,
+    api_response_time FLOAT NOT NULL
+);
+
+-- Create groups from the "identity and access" tab with names from the API JSON

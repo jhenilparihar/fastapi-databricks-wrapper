@@ -1,0 +1,12 @@
+-- SQL query to enable pg_stat_statements extension to check query execution times
+
+-- checks if extension exists or not
+SELECT * FROM pg_available_extensions WHERE name = 'pg_stat_statements'; 
+
+-- enables the extension
+CREATE EXTENSION pg_stat_statements;
+
+
+-- SQL query to find query execution times
+SELECT query, calls, total_exec_time, mean_exec_time, max_exec_time
+FROM pg_stat_statements;
