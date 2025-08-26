@@ -53,7 +53,7 @@ def lag_test(payload, payload2):
 if __name__ == "__main__":
     with open("api_body.json", "r") as f:
         data = json.load(f)
-    payload = data["payload1"]
+    payload = data["payload"]
     payload2 = data["payload2"]
 
     lag_test(payload, payload2)
