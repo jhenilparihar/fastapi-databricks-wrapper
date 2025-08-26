@@ -60,7 +60,6 @@ def insert_metadata(
         response_payload,
         http_status_code,
         error_message,
-        execution_duration_ms,
         created_at,
         product_name,
         study,
@@ -70,7 +69,7 @@ def insert_metadata(
         business_justification,
         api_response_time
     )
-    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
     """
 
     cursor.execute(
@@ -80,7 +79,6 @@ def insert_metadata(
             json.dumps(log.response_payload),
             log.http_status_code,
             log.error_message,
-            log.execution_duration_ms,
             log.created_at,
             log.product_name,
             log.study,
