@@ -1,7 +1,12 @@
 import time
 import requests
 from urllib.parse import urljoin
-from app.core.config import DATABRICKS_HOST, DATABRICKS_TOKEN, DATABRICKS_ACCOUNT_ID
+from app.core.config import (
+    DATABRICKS_HOST,
+    DATABRICKS_TOKEN,
+    DATABRICKS_ACCOUNT_ID,
+    SQL_WAREHOUSE_ID,
+)
 from app.core.logging_config import get_logger
 
 logger = get_logger("databricks_api")
@@ -29,8 +34,7 @@ def _make_request(
     url = urljoin(DATABRICKS_HOST, endpoint)
 
     logger.info(f"Calling Databricks API: {method} {endpoint}")
-
-
+    print(url)
     for attempt in range(retries):
         try:
             resp = requests.request(method, url, headers=HEADERS, timeout=30, **kwargs)
@@ -139,3 +143,22 @@ def ensure_group_exists(group_name: str, retries: int = 3, backoff: int = 2):
     raise DatabricksAPIError(
         -1, f"Group {group_name} created but not visible after retries"
     )
+
+
+def get_tables(table_fullname=None):
+    if table_fullname:
+        return _make_request("GET", f"/api/2.1/unity-catalog/tables/{table_fullname}")
+    return _make_request("GET", "/api/2.1/unity-catalog/tables")
+
+
+def execute_statement(statement: str):
+    data = {
+        "statement": statement,
+        "wait_timeout": "5s",
+        "warehouse_id": SQL_WAREHOUSE_ID,
+    }
+    return _make_request("POST", "/api/2.0/sql/statements", json=data)
+
+
+def sql_status(statement_id: str):
+    return _make_request("GET", f"/api/2.0/sql/statements/{statement_id}")

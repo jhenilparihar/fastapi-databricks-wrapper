@@ -24,4 +24,5 @@ LAKEBASE_DB_NAME: str = os.getenv("LAKEBASE_DB_NAME", "")
 LAKEBASE_USER: str = os.getenv("LAKEBASE_USER", "")
 LAKEBASE_OAUTH_TOKEN: str = os.getenv("LAKEBASE_OAUTH_TOKEN", "")
 LAKEBASE_HOST: str = os.getenv("LAKEBASE_HOST", "")
+SQL_WAREHOUSE_ID: str = os.getenv("SQL_WAREHOUSE_ID", "")
 
