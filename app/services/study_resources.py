@@ -1,39 +1,11 @@
 from time import perf_counter
-from contextlib import contextmanager
 from app.models.study_payload import StudyPayload
 import app.databricks_api as dbx
 from app.core.config import ACCESS_MAP
 from app.core.logging_config import get_logger
+from app.utils.time_logging import timed_op
 
 logger = get_logger("study_resources")
-
-
-@contextmanager
-def timed_op(event: str, extra: dict | None = None):
-    """
-    Context manager to time an operation and log success/failure with duration.
-    Usage:
-        with timed_op("create_schema", {"schema": schema_name, "catalog": catalog_name}):
-            dbx.create_schema(schema_name, catalog_name)
-    """
-    extra = extra or {}
-    start = perf_counter()
-    try:
-        yield
-        duration_ms = int((perf_counter() - start) * 1000)
-        logger.info("ok", extra={"event": event, "duration_ms": duration_ms, **extra})
-    except Exception as e:
-        duration_ms = int((perf_counter() - start) * 1000)
-        logger.error(
-            "fail",
-            extra={
-                "event": event,
-                "duration_ms": duration_ms,
-                "error": str(e),
-                **extra,
-            },
-        )
-        raise
 
 
 def process_payload(payload: StudyPayload):
@@ -49,7 +21,7 @@ def process_payload(payload: StudyPayload):
     study = payload.business_metadata.study
 
     # 1. Check if catalog exists
-    with timed_op("list_catalogs"):
+    with timed_op(logger=logger, event="list_catalogs"):
         catalogs = dbx.list_catalogs().get("catalogs", [])
 
     if catalog_name not in [c["name"] for c in catalogs]:
@@ -63,7 +35,9 @@ def process_payload(payload: StudyPayload):
     for schema in payload.storage_setup.data_schemas:
         schema_name = f"{study}_{schema}"
         with timed_op(
-            "create_schema", {"schema": schema_name, "catalog": catalog_name}
+            logger=logger,
+            event="create_schema",
+            extra={"schema": schema_name, "catalog": catalog_name},
         ):
             dbx.create_schema(schema_name, catalog_name)
 
@@ -74,8 +48,13 @@ def process_payload(payload: StudyPayload):
             continue
         volume_name = f"vol_{schema}"
         with timed_op(
-            "create_volume",
-            {"volume": volume_name, "schema": volume_schema, "catalog": catalog_name},
+            logger=logger,
+            event="create_volume",
+            extra={
+                "volume": volume_name,
+                "schema": volume_schema,
+                "catalog": catalog_name,
+            },
         ):
             dbx.create_volume(volume_name, volume_schema, catalog_name)
 
@@ -85,8 +64,9 @@ def process_payload(payload: StudyPayload):
         volume_name = f"vol_{volume_type}"
         for directory_name in dirs:
             with timed_op(
-                "create_directory",
-                {
+                logger=logger,
+                event="create_directory",
+                extra={
                     "directory": directory_name,
                     "volume": volume_name,
                     "schema": volume_schema,
@@ -102,7 +82,6 @@ def process_payload(payload: StudyPayload):
     if access_controls:
         for schema_name, control in access_controls.items():
             changes = []
-
             for group in control.groups or []:
                 access = ACCESS_MAP.get(group.access, [])
                 if not access:
@@ -130,8 +109,9 @@ def process_payload(payload: StudyPayload):
 
             full_name = f"{catalog_name}.{study}_{schema_name}"
             with timed_op(
-                "grant_permissions",
-                {
+                logger=logger,
+                event="grant_permissions",
+                extra={
                     "object_type": "SCHEMA",
                     "full_name": full_name,
                     "changes_count": len(changes),
